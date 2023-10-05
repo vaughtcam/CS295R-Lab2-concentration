@@ -26,17 +26,16 @@ function shuffleImages(images) {
   }
 }
 
-function fillAndShuffle() {
-  ;
-  fillImages();
-  shuffleImages(images);
-  return (
-    images
-  )
 
+const fillAndShuffle = () => {
+  let localImages = fillImages();
+  shuffleImages(localImages);
+  return localImages;
 }
 
-function isMatch(firstPick, secondPick, images) {
+
+
+const isMatch = (firstPick, secondPick, images) => {
   if (images[firstPick].substr(4, 1) == images[secondPick].substr(4, 1))
     return true;
   else
@@ -46,8 +45,6 @@ function isMatch(firstPick, secondPick, images) {
 
 function App() {
 
-  this.images = this.fillImages();
-  this.shuffleImages(this.images)
   const [matches, setMatches] = useState(0);
   const [tries, setTries] = useState(0);
   const [picks, setPicks] = useState({ first: -1, second: -1 });
@@ -60,14 +57,14 @@ function App() {
 
   const renderCard = (i) => {
     const image = (images[i] === null) ? 'none' :
-      ((firstPick === i || secondPick === i) ?
+      ((picks.first === i || picks.second === i) ?
         'url(' + imagePath + images[i] + ')' :
         'url(' + imagePath + 'black_back.jpg)');
     const enabled = (images[i] != null &&
-      (i != firstPick && i != secondPick) &&
-      (firstPick == -1 || secondPick == -1) &&
+      (i != picks.first && i != picks.second) &&
+      (picks.first == -1 || picks.second == -1) &&
       (matches < 10)) ? true : false;
-    const eventHandler = (enabled) ? this.handleClick : () => { };
+    const eventHandler = (enabled) ? handleClick : () => { };
     const cursor = (enabled) ? "pointer" : "none";
     const style = {
       backgroundImage: image,
@@ -85,16 +82,16 @@ function App() {
   }
   const handleClick = (event) => {
     console.log("Hey! You Clicked!")
-    let localPicks = {...picks};
+    let localPicks = { ...picks };
     setPicks(localPicks);
 
     let images = [...images];
     const index = parseInt(event.target.id);
-    if (firstPick === -1)
+    if (picks.first === -1)
       this.setState({ firstPick: index })
     else {
       this.setState({ secondPick: index })
-      setTimeout(checkCards, 2000, localPicks.first, localPicks.second, localImages, tries, matches);
+      setTimeout(checkCards, 2000, localPicks.first, localPicks.second, images, tries, matches);
     }
     console.log(event.target.id);
   }
@@ -102,7 +99,7 @@ function App() {
   function checkCards(firstPick, secondPick, images, tries, matches) {
     let result = { ...this.state };
     result.tries++;
-    if (this.isMatch()) {
+    if (isMatch()) {
       result.matches++;
       result.images[result.firstPick] = null;
       result.images[result.secondPick] = null;
@@ -111,56 +108,57 @@ function App() {
     result.secondPick = -1;
 
 
-    setImages(result.images),
+      setImages(result.images),
       setPicks(result.firstPick, result.secondPick),
       setMatches(result.matches),
       setTries(result.tries);
   }
 
-      return (
-        <div>
-          <div className="container" id="board">
-            <Status status={status} />
-            <div className="row">
-              <div className="col-sm-1"></div>
-              {this.renderCard(0)}
-              {this.renderCard(1)}
-              {this.renderCard(2)}
-              {this.renderCard(3)}
-              {this.renderCard(4)}
-              <div className="col-1"></div>
-            </div>
-            <div className="row">
-              <div className="col-sm-1"></div>
-              {this.renderCard(5)}
-              {this.renderCard(6)}
-              {this.renderCard(7)}
-              {this.renderCard(8)}
-              {this.renderCard(9)}
-              <div className="col-1"></div>
-            </div>
-            <div className="row">
-              <div className="col-sm-1"></div>
-              {this.renderCard(10)}
-              {this.renderCard(11)}
-              {this.renderCard(12)}
-              {this.renderCard(13)}
-              {this.renderCard(14)}
-              <div className="col-1"></div>
-            </div>
-            <div className="row">
-              <div className="col-sm-1"></div>
-              {this.renderCard(15)}
-              {this.renderCard(16)}
-              {this.renderCard(17)}
-              {this.renderCard(18)}
-              {this.renderCard(19)}
-              <div className="col-1"></div>
-            </div>
-          </div>
-  
+  return (
+    <div>
+      <div className="container" id="board">
+        <Status status={status} />
+        <div className="row">
+          <div className="col-sm-1"></div>
+          {this.renderCard(0)}
+          {this.renderCard(1)}
+          {this.renderCard(2)}
+          {this.renderCard(3)}
+          {this.renderCard(4)}
+          <div className="col-1"></div>
         </div>
- ) }
+        <div className="row">
+          <div className="col-sm-1"></div>
+          {this.renderCard(5)}
+          {this.renderCard(6)}
+          {this.renderCard(7)}
+          {this.renderCard(8)}
+          {this.renderCard(9)}
+          <div className="col-1"></div>
+        </div>
+        <div className="row">
+          <div className="col-sm-1"></div>
+          {this.renderCard(10)}
+          {this.renderCard(11)}
+          {this.renderCard(12)}
+          {this.renderCard(13)}
+          {this.renderCard(14)}
+          <div className="col-1"></div>
+        </div>
+        <div className="row">
+          <div className="col-sm-1"></div>
+          {this.renderCard(15)}
+          {this.renderCard(16)}
+          {this.renderCard(17)}
+          {this.renderCard(18)}
+          {this.renderCard(19)}
+          <div className="col-1"></div>
+        </div>
+      </div>
+
+    </div>
+  )
+}
 
 
 ;
