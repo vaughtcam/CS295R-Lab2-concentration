@@ -36,10 +36,11 @@ const fillAndShuffle = () => {
 
 
 const isMatch = (firstPick, secondPick, images) => {
-  if (images[firstPick].substr(4, 1) == images[secondPick].substr(4, 1))
-    return true;
-  else
-    return false;
+console.log(images[firstPick])
+ // if (images[firstPick].substr(4, 1) == images[secondPick].substr(4, 1))
+ //   return true;
+// else
+  //  return false;
 }
 
 
@@ -51,9 +52,7 @@ function App() {
   const [images, setImages] = useState(fillAndShuffle);
 
 
-  this.handleClick = this.handleClick.bind(this);
-  this.checkCards = this.checkCards.bind(this);
-  this.isMatch = this.isMatch.bind(this);
+
 
   const renderCard = (i) => {
     const image = (images[i] === null) ? 'none' :
@@ -80,78 +79,79 @@ function App() {
       </div>
     )
   }
-  const handleClick = (event) => {
-    console.log("Hey! You Clicked!")
-    let localPicks = { ...picks };
-    setPicks(localPicks);
 
-    let images = [...images];
-    const index = parseInt(event.target.id);
-    if (picks.first === -1)
-      this.setState({ firstPick: index })
-    else {
-      this.setState({ secondPick: index })
-      setTimeout(checkCards, 2000, localPicks.first, localPicks.second, images, tries, matches);
+    const handleClick = (event) => {
+      const index = parseInt(event.target.id);
+      let localPicks = {...picks};
+      if (localPicks.first === -1) {
+        localPicks.first = index;
+      }
+      else {
+        localPicks.second = index;
+        let localImages = [...images];
+        setTimeout(checkCards, 2000, localPicks.first, localPicks.second, localImages, tries, matches);  
+      }
+      setPicks(localPicks);
     }
-    console.log(event.target.id);
-  }
+
+  
 
   function checkCards(firstPick, secondPick, images, tries, matches) {
-    let result = { ...this.state };
-    result.tries++;
+
+    tries++;
     if (isMatch()) {
-      result.matches++;
-      result.images[result.firstPick] = null;
-      result.images[result.secondPick] = null;
+      matches++;
+      images[firstPick] = null;
+      images[secondPick] = null;
     }
-    result.firstPick = -1;
-    result.secondPick = -1;
+    firstPick = -1;
+    secondPick = -1;
 
-
-      setImages(result.images),
-      setPicks(result.firstPick, result.secondPick),
-      setMatches(result.matches),
-      setTries(result.tries);
+    return(
+      setImages(images),
+      setPicks(firstPick, secondPick),
+      setMatches(matches),
+      setTries(tries));
   }
 
   return (
     <div>
       <div className="container" id="board">
-        <Status status={status} />
+      <Status status={status} />
         <div className="row">
           <div className="col-sm-1"></div>
-          {this.renderCard(0)}
-          {this.renderCard(1)}
-          {this.renderCard(2)}
-          {this.renderCard(3)}
-          {this.renderCard(4)}
+          {renderCard(0)}
+          {renderCard(1)}
+          {renderCard(2)}
+          {renderCard(3)}
+          {renderCard(4)}
           <div className="col-1"></div>
         </div>
         <div className="row">
           <div className="col-sm-1"></div>
-          {this.renderCard(5)}
-          {this.renderCard(6)}
-          {this.renderCard(7)}
-          {this.renderCard(8)}
-          {this.renderCard(9)}
+          {renderCard(5)}
+          {renderCard(6)}
+          {renderCard(7)}
+          {renderCard(8)}
+          {renderCard(9)}
           <div className="col-1"></div>
         </div>
         <div className="row">
           <div className="col-sm-1"></div>
-          {this.renderCard(10)}
-          {this.renderCard(11)}
-          {this.renderCard(12)}
-          {this.renderCard(13)}
-          {this.renderCard(14)}
+          {renderCard(10)}
+          {renderCard(11)}
+          {renderCard(12)}
+          {renderCard(13)}
+          {renderCard(14)}
           <div className="col-1"></div>
         </div>
         <div className="row">
           <div className="col-sm-1"></div>
-          {this.renderCard(15)}
-          {this.renderCard(16)}
-          {this.renderCard(17)}
-          {this.renderCard(18)}
-          {this.renderCard(19)}
+          {renderCard(15)}
+          {renderCard(16)}
+          {renderCard(17)}
+          {renderCard(18)}
+          {renderCard(19)}
           <div className="col-1"></div>
         </div>
       </div>
