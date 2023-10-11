@@ -103,8 +103,11 @@ function App() {
       } setPicks({first: -1, second: -1}); }
 
 
-      
+      const status = (matches < 10) ?
+  'Matches: ' + matches + " Tries: " + tries :
+  "Congratulations!  You found all 10 matches in " + tries + " tries!";
   return (
+
     <div>
       <Status status={status} />
       <div className="container" id="board">
