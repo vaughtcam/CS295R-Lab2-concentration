@@ -36,11 +36,11 @@ const fillAndShuffle = () => {
 
 
 const isMatch = (firstPick, secondPick, images) => {
-console.log(images[firstPick])
- // if (images[firstPick].substr(4, 1) == images[secondPick].substr(4, 1))
- //   return true;
-// else
-  //  return false;
+
+ if (images[firstPick].substr(4, 1) == images[secondPick].substr(4, 1))
+   return true;
+else
+   return false;
 }
 
 
@@ -94,30 +94,21 @@ function App() {
       setPicks(localPicks);
     }
 
-  
+    const checkCards = (firstPick, secondPick, images, tries, matches) => 
+    { setTries(tries + 1);
+       if (isMatch(firstPick, secondPick, images)) 
+       { setMatches(matches + 1); 
+        images[firstPick] = null; 
+        images[secondPick] = null; setImages(images); 
+      } setPicks({first: -1, second: -1}); }
 
-  function checkCards(firstPick, secondPick, images, tries, matches) {
 
-    tries++;
-    if (isMatch()) {
-      matches++;
-      images[firstPick] = null;
-      images[secondPick] = null;
-    }
-    firstPick = -1;
-    secondPick = -1;
-
-    return(
-      setImages(images),
-      setPicks(firstPick, secondPick),
-      setMatches(matches),
-      setTries(tries));
-  }
-
+      
   return (
     <div>
-      <div className="container" id="board">
       <Status status={status} />
+      <div className="container" id="board">
+      
         <div className="row">
           <div className="col-sm-1"></div>
           {renderCard(0)}
